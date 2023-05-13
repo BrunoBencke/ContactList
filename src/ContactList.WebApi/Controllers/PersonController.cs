@@ -18,8 +18,15 @@ namespace ContactList.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPerson(PersonModel person, CancellationToken cancellationToken) 
         {
-            await _service.AddAsync(person, cancellationToken);
-            return Ok(person);
+            try
+            {
+                var newPerson = await _service.AddAsync(person, cancellationToken);
+                return Ok(newPerson);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut]

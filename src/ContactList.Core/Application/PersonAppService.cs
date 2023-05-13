@@ -1,19 +1,19 @@
 ﻿using ContactList.Core.Domain.Entities;
-using ContactList.Core.Domain.Interfaces;
+using ContactList.Core.Infrastructure.Repositories;
 using ContactList.Core.Models;
 
 namespace ContactList.Core.Application
 {
     public class PersonAppService
     {
-        private readonly IPersonRepository _personRepository;
+        private readonly PersonRepository _personRepository;
 
-        public PersonAppService(IPersonRepository personRepository)
+        public PersonAppService(PersonRepository personRepository)
         {
             _personRepository = personRepository;
         }
 
-        public async Task AddAsync(PersonModel personModel, CancellationToken cancellationToken)
+        public async Task<Person> AddAsync(PersonModel personModel, CancellationToken cancellationToken)
         {
             var newPerson = new Person()
             {
@@ -22,6 +22,7 @@ namespace ContactList.Core.Application
                 LastName = personModel.LastName
             };
             await _personRepository.AddAsync(newPerson, cancellationToken);
+            return newPerson;
         }
 
         public async Task Update(Guid id, PersonModel personRequest)

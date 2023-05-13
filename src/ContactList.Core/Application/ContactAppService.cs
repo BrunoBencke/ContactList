@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ContactList.Core.Application
 {
-    internal class ContactAppService
+    public class ContactAppService
     {
     }
 }

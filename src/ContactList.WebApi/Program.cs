@@ -1,5 +1,4 @@
 using ContactList.Core.Application;
-using ContactList.Core.Domain.Interfaces;
 using ContactList.Core.Infrastructure.ApiDbContext.cs;
 using ContactList.Core.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -7,13 +6,15 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddScoped<PersonAppService>();
-builder.Services.AddScoped<PersonRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<PersonAppService>();
+builder.Services.AddScoped<PersonRepository>();
+builder.Services.AddScoped<ContactAppService>();
+builder.Services.AddScoped<ContactRepository>();
 
 builder.Services.AddDbContext<APIDbContext>(options => options.UseInMemoryDatabase("ContactListDbs"));
 //In case of SQL Server
