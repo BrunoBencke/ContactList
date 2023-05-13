@@ -40,23 +40,29 @@ namespace ContactList.Core.Application
 
         }
 
-        /*public void Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            _personRepository.Remove(id);
+            var person = await _personRepository.GetByIdAsync(id);
+
+            if (person != null)
+            {
+                await _personRepository.DeleteAsync(person);
+            }
+
         }
 
-        public PersonModel GetById(Guid id)
+        public async Task<Person> GetById(Guid id)
         {
-            var person = _personRepository.GetById(id);
+            var person = await _personRepository.GetByIdAsync(id);
 
-            return _mapper.Map<PersonModel>(person);
+            return person;
         }
 
-        public IEnumerable<PersonModel> GetAll()
+        public async Task<IEnumerable<Person>> GetAll()
         {
-            var people = _personRepository.GetAll();
+            var people = await _personRepository.GetAllAsync();
 
-            return _mapper.Map<IEnumerable<PersonModel>>(people);
-        }*/
+            return people;
+        }
     }
 }

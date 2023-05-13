@@ -16,7 +16,7 @@ namespace ContactList.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPerson(PersonModel person, CancellationToken cancellationToken) 
+        public async Task<IActionResult> AddPerson(PersonModel person, CancellationToken cancellationToken)
         {
             try
             {
@@ -38,33 +38,32 @@ namespace ContactList.WebApi.Controllers
 
         }
 
-        /*[HttpDelete]
+        [HttpDelete]
         [Route("{id:guid}")]
         public async Task<IActionResult> DeletePerson([FromRoute] Guid id)
         {
-            var person = await _dbContext.Persons.FindAsync(id);
-
-            if (person != null)
+            try
             {
-                _dbContext.Remove(person);
-                await _dbContext.SaveChangesAsync();
-                return Ok(person);
+                await _service.Delete(id);
+                return Ok(id);
             }
-
-            return NotFound();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> GetPersons()
         {
-            return Ok(await _service.);
+            return Ok(await _service.GetAll());
         }
 
         [HttpGet]
         [Route("{id:guid}")]
         public async Task<IActionResult> GetPerson([FromRoute] Guid id)
         {
-            var person = await _dbContext.Persons.FindAsync(id);
+            var person = await _service.GetById(id);
 
             if (person == null)
             {
@@ -72,6 +71,6 @@ namespace ContactList.WebApi.Controllers
             }
 
             return Ok(person);
-        }*/
+        }
     }
 }

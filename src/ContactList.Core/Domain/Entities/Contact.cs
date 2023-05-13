@@ -18,6 +18,8 @@ namespace ContactList.Core.Domain.Entities
 
         public ContactType Type { get; set; }
 
+        public int Sequence { get; set; }
+
         public string Value { get; set; }
     }
 }
