@@ -4,21 +4,48 @@ namespace ContactList.Core.Domain.Entities
 {
     public class Contact
     {
-        public Contact(Guid personId, ContactType type, string value)
+        private string id;
+        private string id_person;
+
+        public Guid Id
         {
-            Id = Guid.NewGuid();
-            PersonId = personId;
-            Type = type;
-            Value = value;
+            get
+            {
+                return Guid.Parse(id);
+            }
+            set
+            {
+                if (value != null && value != Guid.Empty)
+                {
+                    id = value.ToString();
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid GUID value");
+                }
+            }
         }
 
-        public Guid Id { get; set; }
-
-        public Guid PersonId { get; set; }
+        public Guid PersonId
+        {
+            get
+            {
+                return Guid.Parse(id_person);
+            }
+            set
+            {
+                if (value != null && value != Guid.Empty)
+                {
+                    id_person = value.ToString();
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid GUID value");
+                }
+            }
+        }
 
         public ContactType Type { get; set; }
-
-        public int Sequence { get; set; }
 
         public string Value { get; set; }
     }

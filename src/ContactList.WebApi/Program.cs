@@ -23,7 +23,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<PersonAppService>();
 builder.Services.AddScoped<PersonRepository>();
-builder.Services.AddScoped<ContactAppService>();
 builder.Services.AddScoped<ContactRepository>();
 
 builder.Services.AddDbContext<APIDbContext>(options => options.UseInMemoryDatabase("ContactListDbs"));

@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ContactList.Core.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace ContactList.Core.Models
 {
     public class PersonModel
     {
-        [Required]
-        public string Name { get; set; }
+        public Person person { get; set; }
 
-        [Required]
-        public string LastName { get; set; }
+        public Contact[] contacts { get; set; }
     }
 }

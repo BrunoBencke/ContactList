@@ -1,27 +1,47 @@
 ﻿using ContactList.Core.Domain.Entities;
+using ContactList.Core.Domain.Enums;
 using ContactList.Core.Infrastructure.Repositories;
 using ContactList.Core.Models;
+using System.Text.Json;
 
 namespace ContactList.Core.Application
 {
     public class PersonAppService
     {
         private readonly PersonRepository _personRepository;
+        private readonly ContactRepository _contactRepository;
 
-        public PersonAppService(PersonRepository personRepository)
+        public PersonAppService(PersonRepository personRepository, ContactRepository contactRepository)
         {
             _personRepository = personRepository;
+            _contactRepository = contactRepository;
         }
 
-        public async Task<Person> AddAsync(PersonModel personModel, CancellationToken cancellationToken)
+        public async Task<Person> AddAsync(string payload, CancellationToken cancellationToken)
         {
+            var person = JsonSerializer.Deserialize<PersonModel>(payload);
+
             var newPerson = new Person()
             {
-                Id = Guid.NewGuid(),
-                Name = personModel.Name,
-                LastName = personModel.LastName
+                Id = person.person.Id,
+                Name = person.person.Name,
+                LastName = person.person.LastName
             };
             await _personRepository.AddAsync(newPerson, cancellationToken);
+
+            foreach (var contactPayload in person.contacts)
+            {
+                var contact = new Contact
+                {
+                    Id = contactPayload.Id,
+                    PersonId = newPerson.Id,
+                    Type = (ContactType)contactPayload.Type,
+                    Value = contactPayload.Value
+                };
+
+                await _contactRepository.AddAsync(contact);
+            }
+
             return newPerson;
         }
 
@@ -29,14 +49,14 @@ namespace ContactList.Core.Application
         {
             var person = await _personRepository.GetByIdAsync(id);
 
-            if (person != null)
+            /*if (person != null)
             {
                 person.Name = personRequest.Name;
                 person.LastName = personRequest.LastName;
 
                 await _personRepository.UpdateAsync(person);
 
-            }
+            }*/
 
         }
 
