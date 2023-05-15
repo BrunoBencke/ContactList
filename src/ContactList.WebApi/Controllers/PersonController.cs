@@ -16,7 +16,7 @@ namespace ContactList.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPerson([FromBody]PersonModel person, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddPerson([FromBody] PersonModel person, CancellationToken cancellationToken)
         {
             try
             {
@@ -31,11 +31,10 @@ namespace ContactList.WebApi.Controllers
 
         [HttpPut]
         [Route("{id:guid}")]
-        public async Task<IActionResult> UpdatePerson([FromRoute] Guid id, PersonModel personRequest)
+        public async Task<IActionResult> UpdatePerson(Guid id, PersonModel personRequest)
         {
             await _service.Update(id, personRequest);
             return Ok(personRequest);
-
         }
 
         [HttpDelete]

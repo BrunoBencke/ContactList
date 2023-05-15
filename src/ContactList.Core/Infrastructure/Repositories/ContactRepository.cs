@@ -45,7 +45,7 @@ namespace ContactList.Core.Infrastructure.Repositories
 
         public async Task<IEnumerable<Contact>> GetContactsByPersonId(Guid id)
         {
-            var contacts = await _dbContext.Contacts.Where(c => c.PersonId == id).ToListAsync();
+            var contacts = await _dbContext.Contacts.Where(c => c.PersonId == id).OrderBy(c => c.Sequence).ToListAsync();
 
             return contacts;
         }

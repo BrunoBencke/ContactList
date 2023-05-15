@@ -1,7 +1,6 @@
 using ContactList.Core.Application;
 using ContactList.Core.Infrastructure.ApiDbContext.cs;
 using ContactList.Core.Infrastructure.Repositories;
-using ContactList.WebApi.Controllers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +26,7 @@ builder.Services.AddScoped<ContactAppService>();
 builder.Services.AddScoped<PersonRepository>();
 builder.Services.AddScoped<ContactRepository>();
 
-builder.Services.AddDbContext<APIDbContext>(options => options.UseInMemoryDatabase("ContactListDbs"));
+builder.Services.AddDbContext<APIDbContext>(options => options.UseInMemoryDatabase("ContactListDb"));
 //In case of SQL Server
 //builder.Services.AddDbContext<ContactListAPIDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
 

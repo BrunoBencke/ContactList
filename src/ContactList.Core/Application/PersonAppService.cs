@@ -16,26 +16,22 @@ namespace ContactList.Core.Application
             _contactRepository = contactRepository;
         }
 
-        public async Task<Person> AddAsync(PersonModel person, CancellationToken cancellationToken)
+        public async Task<Person> AddAsync(PersonModel personModel, CancellationToken cancellationToken)
         {
 
             var newPerson = new Person()
             {
-                Id = person.person.Id,
-                Name = person.person.Name,
-                LastName = person.person.LastName
+                Id = personModel.person.Id,
+                Name = personModel.person.Name,
+                LastName = personModel.person.LastName
             };
             await _personRepository.AddAsync(newPerson, cancellationToken);
 
-            foreach (var contactPayload in person.contacts)
+            foreach (var contactPayload in personModel.contacts)
             {
-                var contact = new Contact
-                {
-                    Id = contactPayload.Id,
-                    PersonId = newPerson.Id,
-                    Type = (ContactType)contactPayload.Type,
-                    Value = contactPayload.Value
-                };
+                var sequence = 0;
+
+                var contact = new Contact(contactPayload.Id, newPerson.Id, sequence++, (ContactType)contactPayload.Type, contactPayload.Value);
 
                 await _contactRepository.AddAsync(contact);
             }
@@ -43,18 +39,35 @@ namespace ContactList.Core.Application
             return newPerson;
         }
 
-        public async Task Update(Guid id, PersonModel personRequest)
+        public async Task Update(Guid id, PersonModel personModel)
         {
-            var person = await _personRepository.GetByIdAsync(id);
+            var updatePerson = await _personRepository.GetByIdAsync(id);
 
-            /*if (person != null)
+            if (updatePerson != null)
             {
-                person.Name = personRequest.Name;
-                person.LastName = personRequest.LastName;
+                updatePerson.Name = personModel.person.Name;
+                updatePerson.LastName = personModel.person.LastName;
 
-                await _personRepository.UpdateAsync(person);
+                await _personRepository.UpdateAsync(updatePerson);
+            }
 
-            }*/
+            var sequence = 0;
+
+            foreach (Contact contact in personModel.contacts)
+            {
+                var person = await _contactRepository.GetByIdAsync(contact.Id);
+                if (person != null)
+                {
+                    person.Sequence = sequence++;
+                    await _contactRepository.UpdateAsync(person);
+                }
+                else
+                {
+                    contact.Sequence = sequence++;
+                    await _contactRepository.AddAsync(contact);
+                }
+
+            }
 
         }
 
@@ -67,6 +80,12 @@ namespace ContactList.Core.Application
                 await _personRepository.DeleteAsync(person);
             }
 
+            var contacts = await _contactRepository.GetContactsByPersonId(id);
+
+            foreach (Contact contact in contacts)
+            {
+                await _contactRepository.DeleteAsync(contact);
+            }
         }
 
         public async Task<Person> GetById(Guid id)
