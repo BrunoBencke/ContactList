@@ -2,7 +2,6 @@
 using ContactList.Core.Domain.Enums;
 using ContactList.Core.Infrastructure.Repositories;
 using ContactList.Core.Models;
-using System.Text.Json;
 
 namespace ContactList.Core.Application
 {
@@ -17,9 +16,8 @@ namespace ContactList.Core.Application
             _contactRepository = contactRepository;
         }
 
-        public async Task<Person> AddAsync(string payload, CancellationToken cancellationToken)
+        public async Task<Person> AddAsync(PersonModel person, CancellationToken cancellationToken)
         {
-            var person = JsonSerializer.Deserialize<PersonModel>(payload);
 
             var newPerson = new Person()
             {

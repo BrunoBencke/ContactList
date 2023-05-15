@@ -2,25 +2,7 @@
 {
     public class Person
     {
-        private string id;
-        public Guid Id
-        {
-            get
-            {
-                return Guid.Parse(id);
-            }
-            set
-            {
-                if (value != null && value != Guid.Empty)
-                {
-                    id = value.ToString();
-                }
-                else
-                {
-                    throw new ArgumentException("Invalid GUID value");
-                }
-            }
-        }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string? LastName { get; set; }
     }

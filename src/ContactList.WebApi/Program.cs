@@ -1,6 +1,7 @@
 using ContactList.Core.Application;
 using ContactList.Core.Infrastructure.ApiDbContext.cs;
 using ContactList.Core.Infrastructure.Repositories;
+using ContactList.WebApi.Controllers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<PersonAppService>();
+builder.Services.AddScoped<ContactAppService>();
 builder.Services.AddScoped<PersonRepository>();
 builder.Services.AddScoped<ContactRepository>();
 

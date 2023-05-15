@@ -42,5 +42,12 @@ namespace ContactList.Core.Infrastructure.Repositories
         {
             return await _dbContext.Contacts.ToListAsync(cancellationToken);
         }
+
+        public async Task<IEnumerable<Contact>> GetContactsByPersonId(Guid id)
+        {
+            var contacts = await _dbContext.Contacts.Where(c => c.PersonId == id).ToListAsync();
+
+            return contacts;
+        }
     }
 }

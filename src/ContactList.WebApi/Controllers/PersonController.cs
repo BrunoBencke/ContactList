@@ -16,11 +16,11 @@ namespace ContactList.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPerson(string payload, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddPerson([FromBody]PersonModel person, CancellationToken cancellationToken)
         {
             try
             {
-                var newPerson = await _service.AddAsync(payload, cancellationToken);
+                var newPerson = await _service.AddAsync(person, cancellationToken);
                 return Ok(newPerson);
             }
             catch (Exception ex)

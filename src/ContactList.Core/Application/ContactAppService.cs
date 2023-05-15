@@ -1,0 +1,22 @@
+﻿using ContactList.Core.Domain.Entities;
+using ContactList.Core.Infrastructure.Repositories;
+
+namespace ContactList.Core.Application
+{
+    public class ContactAppService
+    {
+        private readonly ContactRepository _contactRepository;
+
+        public ContactAppService(ContactRepository contactRepository)
+        {
+            _contactRepository = contactRepository;
+        }
+
+        public async Task<IEnumerable<Contact>> GetContactsByPersonId(Guid id)
+        {
+            var contacts = await _contactRepository.GetContactsByPersonId(id);
+
+            return contacts;
+        }
+    }
+}
