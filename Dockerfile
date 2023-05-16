@@ -18,7 +18,7 @@ FROM base AS final
 
 WORKDIR /app
 COPY --from=build /app/ .
-ENTRYPOINT ["dotnet", "ContactList.WebApi.dll"]
+#ENTRYPOINT ["dotnet", "ContactList.WebApi.dll"]
 
 #Usa porta dinamica
-#CMD ASPNETCORE_URLS="http://*":$port" dotnet ContactList.WebApi.dll
+CMD ASPNETCORE_URLS="http://*:$PORT" dotnet ContactList.WebApi.dll

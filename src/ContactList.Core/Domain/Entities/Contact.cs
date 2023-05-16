@@ -13,6 +13,14 @@ namespace ContactList.Core.Domain.Entities
             Value = value;
         }
 
+        public Contact(Guid id, Guid personId, ContactType type, string value)
+        {
+            Id = id;
+            PersonId = personId;
+            Type = type;
+            Value = value;
+        }
+
         public Guid Id { get; set; }
 
         public Guid PersonId { get; set; }

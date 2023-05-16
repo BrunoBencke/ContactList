@@ -1,5 +1,4 @@
 ﻿using ContactList.Core.Domain.Entities;
-using System.ComponentModel.DataAnnotations;
 
 namespace ContactList.Core.Models
 {
@@ -7,6 +6,6 @@ namespace ContactList.Core.Models
     {
         public Person person { get; set; }
 
-        public Contact[] contacts { get; set; }
+        public ContactModel[] contacts { get; set; }
     }
 }

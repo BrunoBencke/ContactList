@@ -27,10 +27,10 @@ namespace ContactList.Core.Application
             };
             await _personRepository.AddAsync(newPerson, cancellationToken);
 
+            var sequence = 0;
+
             foreach (var contactPayload in personModel.contacts)
             {
-                var sequence = 0;
-
                 var contact = new Contact(contactPayload.Id, newPerson.Id, sequence++, (ContactType)contactPayload.Type, contactPayload.Value);
 
                 await _contactRepository.AddAsync(contact);
@@ -53,20 +53,17 @@ namespace ContactList.Core.Application
 
             var sequence = 0;
 
-            foreach (Contact contact in personModel.contacts)
-            {
-                var person = await _contactRepository.GetByIdAsync(contact.Id);
-                if (person != null)
-                {
-                    person.Sequence = sequence++;
-                    await _contactRepository.UpdateAsync(person);
-                }
-                else
-                {
-                    contact.Sequence = sequence++;
-                    await _contactRepository.AddAsync(contact);
-                }
+            var contacts = await _contactRepository.GetContactsByPersonId(personModel.person.Id);
 
+            foreach (Contact contact in contacts)
+            {
+                await _contactRepository.DeleteAsync(contact);
+            }
+
+            foreach (ContactModel contact in personModel.contacts)
+            {
+                    Contact newContact = new Contact(contact.Id, contact.PersonId, sequence++, contact.Type, contact.Value);
+                    await _contactRepository.AddAsync(newContact);
             }
 
         }

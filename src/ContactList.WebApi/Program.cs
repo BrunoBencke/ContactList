@@ -9,7 +9,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins("http://localhost:3000")
+        builder.AllowAnyOrigin()
                .AllowAnyHeader()
                .AllowAnyMethod();
     });
@@ -33,11 +33,11 @@ builder.Services.AddDbContext<APIDbContext>(options => options.UseInMemoryDataba
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseHttpsRedirection();
 
