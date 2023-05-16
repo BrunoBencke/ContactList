@@ -33,8 +33,15 @@ namespace ContactList.WebApi.Controllers
         [Route("{id:guid}")]
         public async Task<IActionResult> UpdatePerson(Guid id, PersonModel personRequest)
         {
-            await _service.Update(id, personRequest);
-            return Ok(personRequest);
+            try
+            {
+                await _service.Update(id, personRequest);
+                return Ok(personRequest);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete]
@@ -55,21 +62,35 @@ namespace ContactList.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPersons()
         {
-            return Ok(await _service.GetAll());
+            try
+            {
+                return Ok(await _service.GetAll());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
         [Route("{id:guid}")]
         public async Task<IActionResult> GetPerson([FromRoute] Guid id)
         {
-            var person = await _service.GetById(id);
-
-            if (person == null)
+            try
             {
-                return NotFound();
-            }
+                var person = await _service.GetById(id);
 
-            return Ok(person);
+                if (person == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(person);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

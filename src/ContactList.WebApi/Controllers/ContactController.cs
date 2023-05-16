@@ -18,14 +18,21 @@ namespace ContactList.WebApi.Controllers
         [Route("{id:guid}")]
         public async Task<IActionResult> GetContactsByPersonId(Guid id)
         {
-            var contacts = await _service.GetContactsByPersonId(id);
-
-            if (contacts == null)
+            try
             {
-                return NotFound();
-            }
+                var contacts = await _service.GetContactsByPersonId(id);
 
-            return Ok(contacts);
+                if (contacts == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(contacts);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
     }
